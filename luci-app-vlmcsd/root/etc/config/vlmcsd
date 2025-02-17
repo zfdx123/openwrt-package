@@ -1,5 +1,4 @@
-
-config vlmcsd 'config'
-	option autoactivate '1'
-	option enabled '1'
-
+config vlmcsd "config"
+    option enabled '1'
+    option auto_activate '1'
+    option port '1688'
