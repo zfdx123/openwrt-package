@@ -13,8 +13,10 @@ const callServiceList = rpc.declare({
 });
 
 function getServiceStatus() {
-    return L.resolveDefault(callServiceList('vlmcsd'), {}).then(res =>
-        res?.[0]?.result[1]?.vlmcsd?.instances?.instance1?.running
+    return L.resolveDefault(callServiceList('vlmcsd'), {}).then(res => {
+        console.log(res);
+        return res?.['vlmcsd']?.['instances']?.['vlmcsd']?.['running']
+    }
     );
 }
 

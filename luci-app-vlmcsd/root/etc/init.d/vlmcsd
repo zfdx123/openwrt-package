@@ -25,6 +25,7 @@ start_service() {
     procd_append_param command -i /etc/vlmcsd/vlmcsd.ini
     procd_append_param command -L 0.0.0.0:$port_value
     procd_append_param command -L [::]:$port_value
+    procd_append_param command -D
     procd_close_instance
     
     echo "KMS Server has started on port $port_value."
