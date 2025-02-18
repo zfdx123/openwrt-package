@@ -12,23 +12,9 @@ const callServiceList = rpc.declare({
     expect: { '': {} }
 });
 
-const callServiceStart = rpc.declare({
-    object: 'service',
-    method: 'start',
-    params: ['name'],
-    expect: { '': {} }
-});
-
-const callServiceStop = rpc.declare({
-    object: 'service',
-    method: 'stop',
-    params: ['name'],
-    expect: { '': {} }
-});
-
 function getServiceStatus() {
     return L.resolveDefault(callServiceList('vlmcsd'), {}).then(res =>
-        res?.['vlmcsd']?.['instances']?.['vlmcsd']?.['running']
+        res?.[0]?.result[1]?.vlmcsd?.instances?.instance1?.running
     );
 }
 
@@ -37,17 +23,6 @@ function renderStatus(status) {
     const service = _('Vlmcsd KMS Server');
     const running = status ? _('RUNNING') : _('NOT RUNNING');
     return `<em><span style="color:${color}"><strong>${service} ${running}</strong></span></em>`;
-}
-
-function toggleService(action) {
-    return (status) => {
-        const service = 'vlmcsd';
-        if (action === 'start' && !status) {
-            return callServiceStart(service).then(() => _('Starting Vlmcsd KMS Server...'));
-        } else if (action === 'stop' && status) {
-            return callServiceStop(service).then(() => _('Stopping Vlmcsd KMS Server...'));
-        }
-    };
 }
 
 return view.extend({
@@ -67,14 +42,7 @@ return view.extend({
             });
 
             return E('div', { class: 'cbi-section', id: 'status_bar' }, [
-                E('p', { id: 'vlmcsd_status' }, _('Collecting data…')),
-                E('button', {
-                    onclick: function () {
-                        L.resolveDefault(getServiceStatus()).then(function (status) {
-                            toggleService(status ? 'stop' : 'start')(status);
-                        });
-                    }
-                }, _('Toggle Service'))
+                E('p', { id: 'vlmcsd_status' }, _('Collecting data…'))
             ]);
         };
 

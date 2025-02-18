@@ -10,7 +10,7 @@ start_service() {
     config_load "vlmcsd"
     
     # 获取启用状态的配置值
-    config_get enable_value config enable 0
+    config_get enable_value config enabled 0
     if [ "$enable_value" -eq 0 ]; then
         echo "KMS Server is disabled, not starting."
         exit 0
